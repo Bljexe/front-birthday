@@ -1,103 +1,129 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import ParticleBackground from '../components/ParticleBackground';
+import CodeInput from '../components/CodeInput';
+import Invitation from '../components/Invitation';
+import BackgroundMusic from '../components/BackgroundMusic';
+import guestsData from '../data/guests.json';
+import { saveCurrentGuest, getCurrentGuest } from '../utils/updateGuestStatus';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentView, setCurrentView] = useState('landing');
+  const [currentGuest, setCurrentGuest] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const savedGuest = getCurrentGuest();
+    if (savedGuest) {
+      setCurrentGuest(savedGuest);
+      setCurrentView('invitation');
+    }
+  }, []);
+
+  const handleCodeSubmit = async (code) => {
+    setIsLoading(true);
+    setError('');
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const guest = guestsData.guests.find(g => g.code === code);
+
+    if (guest) {
+      saveCurrentGuest(guest);
+      setCurrentGuest(guest);
+      setCurrentView('invitation');
+    } else {
+      setError('Código não encontrado. Verifique se digitou corretamente.');
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleGuestConfirm = (guestId, confirmed) => {
+    console.log(`Convidado ${guestId} confirmou presença!`);
+    
+    if (currentGuest && currentGuest.id === guestId) {
+      setCurrentGuest(prev => ({ ...prev, confirmed }));
+    }
+  };
+
+  if (currentView === 'invitation' && currentGuest) {
+    return (
+      <>
+        <Invitation 
+          guest={currentGuest} 
+          party={guestsData.party}
+          onConfirm={handleGuestConfirm}
+        />
+        <BackgroundMusic />
+      </>
+    );
+  }
+
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: 'black', position: 'relative', overflow: 'hidden' }}>
+      <ParticleBackground />
+
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <div style={{
+          position: 'absolute', top: '80px', left: '40px',
+          width: '80px', height: '80px',
+          backgroundColor: 'rgba(59,130,246,0.05)',
+          borderRadius: '9999px'
+        }} />
+        <div style={{
+          position: 'absolute', top: '160px', right: '80px',
+          width: '128px', height: '128px',
+          backgroundColor: 'rgba(37,99,235,0.05)',
+          borderRadius: '9999px'
+        }} />
+      </div>
+
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '40px 20px',
+      }}>
+        <div style={{
+          width: '100%',
+          maxWidth: '600px',
+          backgroundColor: 'rgba(17, 24, 39, 0.6)',
+          borderRadius: '20px',
+          padding: '40px 30px',
+          boxShadow: '0 0 25px rgba(37,99,235,0.2)',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <h1 style={{ fontSize: '28px', color: 'white', fontWeight: '500' }}>
+              Digite seu código
+            </h1>
+          </div>
+
+          <CodeInput 
+            onCodeSubmit={handleCodeSubmit}
+            isLoading={isLoading}
+          />
+
+          {error && (
+            <div style={{
+              marginTop: '20px',
+              color: '#f87171',
+              fontSize: '16px',
+              textAlign: 'center',
+              fontWeight: '500'
+            }}>
+              {error}
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      
+      <BackgroundMusic />
     </div>
   );
 }

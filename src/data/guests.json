@@ -1,0 +1,141 @@
+{
+  "guests": [
+    {
+      "id": "guest001",
+      "code": "X9A7-2B4C-1D8E-5F6G",
+      "name": "Alexandre",
+      "message": "Fala pitbull do mangue, meu mano Xandinho, você está convidado para meu aniversário, não esqueça de trazer a bundinha para a festa!",
+      "photo": "/photos/alexandre.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest002",
+      "code": "Q2W3-E4R5-T6Y7-U8I9",
+      "name": "Ana Helisa",
+      "message": "Olá Ana Helisa, você está convidada para meu aniversário! Traz teu futuro esposo junto, por favor!",
+      "photo": "/photos/ana-helisa.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest003",
+      "code": "Z1X2-C3V4-B5N6-M7L8",
+      "name": "Brenda Amancio",
+      "message": "Oi Brendinha, você está convidada para meu aniversário, vai me pagar uma breja!",
+      "photo": "/photos/brenda-amancio.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest004",
+      "code": "P0O9-I8U7-Y6T5-R4E3",
+      "name": "Dafinie Pereira",
+      "message": "Meu amorzinho, preciso nem te convidar né, mas tô mandando pra você confirmar presença no site kkkk, te amo!",
+      "photo": "/photos/dafinie-pereira.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest005",
+      "code": "A1S2-D3F4-G5H6-J7K8",
+      "name": "Douglas Haber",
+      "message": "Fala meu patrão, você está convidado para meu aniversário, se não vier é ex-amigo viu!",
+      "photo": "/photos/douglas-haber.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest006",
+      "code": "L9K8-J7H6-G5F4-D3S2",
+      "name": "Ellen Thais",
+      "message": "Falaaaa Ellen, você está convidada para meu aniversário, quero presente e uma breja por favor! Obrigado.",
+      "photo": "/photos/ellen-thais.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest007",
+      "code": "M1N2-B3V4-C5X6-Z7Q8",
+      "name": "Eric Bruno",
+      "message": "Fala meu patrão, você está convidado para meu aniversário, se não vier é ex-amigo viu, e bora sair na mão logo logo, se lambuzar na porrada!",
+      "photo": "/photos/eric-bruno.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest008",
+      "code": "W9E8-R7T6-Y5U4-I3O2",
+      "name": "Gabriel Costa",
+      "message": "Fala meu patrão, você está convidado para meu aniversário, se não vier é ex-amigo viu, e bora marcar uma viagem, poxa!",
+      "photo": "/photos/gabriel-costa.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest009",
+      "code": "S1D2-F3G4-H5J6-K7L8",
+      "name": "Igor",
+      "message": "Fala meu patrão, você está convidado para meu aniversário, se não vier é ex-amigo viu, e bora marcar uns rolezinhos e um COD.",
+      "photo": "/photos/igor.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest010",
+      "code": "Q9A8-Z7X6-C5V4-B3N2",
+      "name": "Isabelle Vieira",
+      "message": "Falaaaa Isabelle, você está convidada para meu aniversário, você e sua irmã estão me devendo presente e uma breja! Obrigado.",
+      "photo": "/photos/isabelle-vieira.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest011",
+      "code": "U1Y2-T3R4-E5W6-Q7A8",
+      "name": "Lucas Tenegra",
+      "message": "Fala meu patrão, você está convidado para meu aniversário, se não vier é ex-amigo viu! E traz sua mulher também pra curtir.",
+      "photo": "/photos/lucas-tenegra.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest012",
+      "code": "M9L8-K7J6-H5G4-F3D2",
+      "name": "Matheus Buba",
+      "message": "Fala meu patrão garanhão de novela, você está convidado para meu aniversário, se não vier é ex-amigo viu!",
+      "photo": "/photos/matheus-buba.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest013",
+      "code": "N1B2-V3C4-X5Z6-Q7W8",
+      "name": "Matheus Silva",
+      "message": "Fala amigooo, saudades de você! Estou te convidando para meu aniversário, bora curtir!",
+      "photo": "/photos/matheus-silva.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest014",
+      "code": "E9R8-T7Y6-U5I4-O3P2",
+      "name": "William Amancio",
+      "message": "Falaaa William, você está convidado para meu aniversário, espero que você me dê um presente bem caro!",
+      "photo": "/photos/william-amancio.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest015",
+      "code": "A0B9-C8D7-E6F5-G4H3",
+      "name": "Nicoli Amancio",
+      "message": "Falaaaa Nicoleti, você está convidada para meu aniversário, traz seu homem junto e um presente caro, por favor!",
+      "photo": "/photos/nicoli-amancio.png",
+      "confirmed": false
+    },
+    {
+      "id": "guest016",
+      "code": "H4G3-F2E1-D0C9-B8A7",
+      "name": "Rodrigao",
+      "message": "Fala negão gostosão, garanhão, você está convidado para meu aniversário, se não vier é ex-amigo!",
+      "photo": "/photos/rodrigues.png",
+      "confirmed": false
+    }
+  ],
+  "party": {
+    "date": "11 de outubro de 2024",
+    "time": "19:00",
+    "location": "Bergamotta Bar",
+    "address": "Rua Vicente Machado, 627 - Curitiba/PR",
+    "locationUrl": "https://www.instagram.com/bergamotta.bar/",
+    "menuUrl": "https://cdn.flowcode.com/prodassets/Cardapio_Online.jpg?ts=1753972296&fce_id=e5b938e6-e940-4edb-989d-0f821dff842c",
+    "message": "Quem não dale, daliçença!"
+  }
+}
