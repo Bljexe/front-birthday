@@ -127,6 +127,14 @@
       "message": "Fala negão gostosão, garanhão, você está convidado para meu aniversário, se não vier é ex-amigo!",
       "photo": "/photos/rodrigues.png",
       "confirmed": false
+    },
+    {
+      "id": "guest017",
+      "code": "G5H4-F3E2-D1C0-B9A8",
+      "name": "Melissa Rodrigues",
+      "message": "Falaaa parceira, saudades de você! Depois da formatura nunca mais mandou um salve kkkkkk, mas enfim, você está sendo convidada para meu aniversário, espero que você confirme sua presença! Traga seu futuro marido também!",
+      "photo": "/photos/melissa.png",
+      "confirmed": false
     }
   ],
   "party": {
