@@ -1,20 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import {
-  FaGift,
-  FaStar,
-  FaUser,
-  FaEnvelope,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaBirthdayCake,
-  FaCheck,
+import { 
+  FaGift, 
+  FaStar, 
+  FaUser, 
+  FaEnvelope, 
+  FaCalendarAlt, 
+  FaMapMarkerAlt, 
+  FaBirthdayCake, 
+  FaCheck, 
   FaUtensils,
   FaGlassCheers,
   FaMobileAlt,
-  FaSpinner
+  FaSpinner,
+  FaHeadphones
 } from 'react-icons/fa';
 import { updateGuestStatus, redirectToWhatsApp } from '../utils/updateGuestStatus';
 
@@ -23,34 +24,72 @@ export default function Invitation({ guest, party, onConfirm }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showRedirecting, setShowRedirecting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showKikoModal, setShowKikoModal] = useState(false);
+  const audioRef = useRef(null);
+  const kikoAudioRef = useRef(null);
 
   useEffect(() => {
     setIsLoaded(true);
+    
+    setTimeout(() => {
+      setShowKikoModal(true);
+      
+      if (kikoAudioRef.current) {
+        kikoAudioRef.current.play();
+        
+        setTimeout(() => {
+          if (kikoAudioRef.current) {
+            kikoAudioRef.current.pause();
+            kikoAudioRef.current.currentTime = 0;
+          }
+        }, 1000);
+      }
+      
+      setTimeout(() => {
+        setShowKikoModal(false);
+      }, 1000);
+      
+    }, 500);
   }, []);
 
   const handleConfirmPresence = () => {
     setIsUpdating(true);
-
+    
     try {
       const result = updateGuestStatus(guest.id, true);
-
+      
       if (result.success) {
-        setIsConfirmed(true);
+    setIsConfirmed(true);
         if (onConfirm) {
           onConfirm(guest.id, true);
         }
-
+        
+        setShowModal(true);
+        
+        if (audioRef.current) {
+          audioRef.current.play();
+          
+            setTimeout(() => {
+              if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0; 
+              }
+            }, 4000);
+        }
+        
         setTimeout(() => {
+          setShowModal(false);
           setIsUpdating(false);
           setShowRedirecting(true);
-
+          
           setTimeout(() => {
             const message = `Presença confirmada meu patrão! Seu presente será ganho!`;
             redirectToWhatsApp('5541984335936', message);
-          }, 1000);
-
-        }, 2000);
-
+          }, 2000);
+          
+        }, 4000);
+        
       } else {
         console.error('Erro ao confirmar presença:', result.error);
         alert('Erro ao confirmar presença. Tente novamente.');
@@ -342,6 +381,105 @@ export default function Invitation({ guest, party, onConfirm }) {
     lineHeight: 1.5
   };
 
+  const modalOverlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.9)',
+    backdropFilter: 'blur(15px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    opacity: showModal ? 1 : 0,
+    visibility: showModal ? 'visible' : 'hidden',
+    transition: 'opacity 1.2s ease-in-out, visibility 1.2s ease-in-out',
+    padding: '20px'
+  };
+
+  const modalContentStyle = {
+    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(15, 15, 35, 0.95))',
+    backdropFilter: 'blur(25px)',
+    border: '2px solid rgba(59, 130, 246, 0.4)',
+    borderRadius: '32px',
+    padding: 'clamp(40px, 10vw, 60px)',
+    textAlign: 'center',
+    maxWidth: '450px',
+    width: '100%',
+    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+    transform: showModal ? 'scale(1) translateY(0) rotateX(0deg)' : 'scale(0.7) translateY(50px) rotateX(15deg)',
+    transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    position: 'relative',
+    overflow: 'hidden'
+  };
+
+  const modalTitleStyle = {
+    fontSize: 'clamp(28px, 7vw, 36px)',
+    fontWeight: '800',
+    background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #60a5fa 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    marginBottom: 'clamp(20px, 5vw, 28px)',
+    letterSpacing: '-0.02em',
+    lineHeight: 1.2
+  };
+
+  const modalSubtitleStyle = {
+    color: '#93c5fd',
+    fontSize: 'clamp(18px, 4.5vw, 22px)',
+    marginBottom: 'clamp(24px, 6vw, 36px)',
+    lineHeight: 1.5,
+    fontWeight: '500'
+  };
+
+  const modalIconStyle = {
+    fontSize: 'clamp(56px, 14vw, 72px)',
+    color: '#3b82f6',
+    marginBottom: 'clamp(20px, 5vw, 28px)',
+    animation: 'pulse 2s ease-in-out infinite',
+    filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.5))'
+  };
+
+  // Estilos do Modal Circular do Kiko
+  const kikoModalOverlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.8)',
+    backdropFilter: 'blur(10px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10000,
+    opacity: showKikoModal ? 1 : 0,
+    visibility: showKikoModal ? 'visible' : 'hidden',
+    transition: 'opacity 0.6s ease-in-out, visibility 0.6s ease-in-out'
+  };
+
+  const kikoModalContentStyle = {
+    width: 'clamp(200px, 50vw, 300px)',
+    height: 'clamp(200px, 50vw, 300px)',
+    borderRadius: '50%',
+    overflow: 'hidden',
+    border: '4px solid rgba(59, 130, 246, 0.6)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+    transform: showKikoModal ? 'scale(1) rotate(0deg)' : 'scale(0.3) rotate(180deg)',
+    transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    position: 'relative'
+  };
+
+  const kikoImageStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '50%'
+  };
+
   return (
     <>
       <style jsx>{`
@@ -420,7 +558,7 @@ export default function Invitation({ guest, party, onConfirm }) {
           <div style={particleStyle(200, 120, 6, 2.5)} />
           <div style={particleStyle(300, 200, 10, 1.2)} />
           <div style={particleStyle(100, 300, 5, 0.8)} />
-        </div>
+      </div>
 
         <div style={mainContainerStyle}>
           <div style={headerStyle}>
@@ -440,17 +578,17 @@ export default function Invitation({ guest, party, onConfirm }) {
                 <div style={photoContainerStyle}>
                   <div style={photoGlowStyle} />
                   <div style={photoStyle}>
-                    <Image
-                      src={guest.photo}
-                      alt={guest.name}
+                  <Image
+                    src={guest.photo}
+                    alt={guest.name}
                       width={200}
                       height={200}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => {
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(guest.name)}&background=1e40af&color=fff&size=200`;
-                      }}
-                    />
-                  </div>
+                    }}
+                  />
+                </div>
                   <div style={badgeStyle}>
                     <FaStar style={{ fontSize: 'clamp(16px, 4vw, 20px)', color: 'whjite' }} />
                   </div>
@@ -458,7 +596,7 @@ export default function Invitation({ guest, party, onConfirm }) {
                 <h2 style={nameStyle}>
                   Olá, {guest.name}! <FaUser style={{ marginLeft: '8px', color: '#3b82f6' }} />
                 </h2>
-              </div>
+            </div>
 
               <div style={sectionStyle}>
                 <div style={sectionHeaderStyle}>
@@ -473,7 +611,7 @@ export default function Invitation({ guest, party, onConfirm }) {
                   <div style={sectionHeaderStyle}>
                     <FaCalendarAlt style={sectionIconStyle} />
                     <h3 style={sectionTitleStyle}>Data</h3>
-                  </div>
+            </div>
                   <p style={textStyle}>{party.date}</p>
                   <p style={highlightTextStyle}>{party.time}</p>
                 </div>
@@ -482,7 +620,7 @@ export default function Invitation({ guest, party, onConfirm }) {
                   <div style={sectionHeaderStyle}>
                     <FaMapMarkerAlt style={sectionIconStyle} />
                     <h3 style={sectionTitleStyle}>Local</h3>
-                  </div>
+              </div>
                   <p style={textStyle}>{party.location}</p>
                   <p style={{ ...textStyle, fontSize: 'clamp(12px, 3vw, 14px)', marginBottom: 'clamp(8px, 2vw, 12px)' }}>{party.address}</p>
                   <a
@@ -511,8 +649,8 @@ export default function Invitation({ guest, party, onConfirm }) {
                   >
                     Ver no Instagram <FaMobileAlt style={{ marginLeft: '8px' }} />
                   </a>
-                </div>
               </div>
+            </div>
 
               <div style={{
                 ...sectionStyle,
@@ -532,13 +670,13 @@ export default function Invitation({ guest, party, onConfirm }) {
                 }}>
                   {party.message}
                 </p>
-              </div>
+            </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(12px, 3vw, 16px)' }}>
                 {isUpdating ? (
-                  <button
+                <button
                     disabled
-                    style={{
+                  style={{
                       ...buttonStyle,
                       opacity: 0.7,
                       cursor: 'not-allowed'
@@ -566,15 +704,15 @@ export default function Invitation({ guest, party, onConfirm }) {
                   >
                     <FaCheck style={{ marginRight: '8px' }} />
                     Confirmar Presença
-                  </button>
-                ) : (
+                </button>
+              ) : (
                   <div style={confirmedStyle}>
                     <FaGlassCheers style={{ marginRight: '8px' }} /> Presença Confirmada!
                     <p style={confirmedTextStyle}>Obrigado! Estou ansioso para comemorar com você!</p>
-                  </div>
-                )}
+                </div>
+              )}
 
-                <button
+              <button
                   onClick={handleViewMenu}
                   style={secondaryButtonStyle}
                   onMouseEnter={(e) => {
@@ -594,6 +732,42 @@ export default function Invitation({ guest, party, onConfirm }) {
 
         </div>
       </div>
+
+      <div style={kikoModalOverlayStyle}>
+        <div style={kikoModalContentStyle}>
+          <Image
+            src="/photos/kiko.jpg"
+            alt="Kiko"
+            width={300}
+            height={300}
+            style={kikoImageStyle}
+            priority
+          />
+        </div>
+      </div>
+
+      <div style={modalOverlayStyle}>
+        <div style={modalContentStyle}>
+          <FaHeadphones style={modalIconStyle} />
+          <h2 style={modalTitleStyle}>Som que Relaxa a Mente</h2>
+          <p style={modalSubtitleStyle}>Relaxe enquanto processamos sua confirmação...</p>
+        </div>
+      </div>
+
+      <audio
+        ref={audioRef}
+        src="/music/makitaa.mp3"
+        preload="auto"
+        style={{ display: 'none' }}
+      />
+      
+      <audio
+        ref={kikoAudioRef}
+        src="/music/kiko.mp3"
+        preload="auto"
+        style={{ display: 'none' }}
+        volume={0.3}
+      />
     </>
   );
 }
